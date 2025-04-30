@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -7,12 +9,10 @@ const Signup = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     try {
       const response = await fetch("http://localhost:5000/api/users/register", {
@@ -31,10 +31,13 @@ const Signup = () => {
 
       if (data.token) {
         localStorage.setItem("token", data.token);
-        navigate("/dashboard");
+        toast.success('Registration successful!');
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
       }
     } catch (error) {
-      setError(error.message);
+      toast.error(error.message || 'Registration failed');
       console.error("Signup error:", error);
     }
   };
@@ -48,13 +51,15 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+      <ToastContainer position="top-right" autoClose={2000} />
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+        {/* Remove this error block since we're using toast now
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {error}
           </div>
-        )}
+        )} */}
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="block text-gray-700 mb-2" htmlFor="name">
