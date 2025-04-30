@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold text-gray-800 mb-6">
-        Welcome to Our App
+        Welcome to the App
       </h1>
       <div className="space-x-4">
         <Link
